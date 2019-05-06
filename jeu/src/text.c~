@@ -1,0 +1,39 @@
+#include "text.h"
+
+void initText(Text *T)
+{
+	T->textVie=NULL;
+}
+
+int loadFont(TTF_Font **police)
+{
+	if(TTF_Init() == -1) {
+		printf("Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
+		return EXIT_FAILURE;
+	}
+	*police = TTF_OpenFont("../images/Ubuntu-Title.ttf", 20);
+	return EXIT_SUCCESS;
+}
+
+
+void displayText(TTF_Font *police,Text *T,SDL_Surface *screen,Hero H,Background Bg)
+{
+	SDL_Color couleurNoire = {0, 0, 0};
+	SDL_Color couleurBlanche = {255, 255, 255};
+	SDL_Rect positionTextVie;
+	positionTextVie.x=100;
+	positionTextVie.y=100;
+	char vie1[10];
+	//Vie
+	sprintf(vie1,"VIE= %d",H.vie);
+	T->textVie = TTF_RenderText_Shaded(police,vie1,couleurNoire, couleurBlanche);
+	SDL_SetColorKey(T->textVie, SDL_SRCCOLORKEY, SDL_MapRGB(T->textVie->format, 255, 255, 255));
+	SDL_BlitSurface(T->textVie,NULL,screen,&positionTextVie);
+
+}
+
+void freeFont(TTF_Font **police)
+{
+	TTF_CloseFont(*police); 
+        TTF_Quit();	
+}
